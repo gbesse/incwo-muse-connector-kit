@@ -1,0 +1,62 @@
+openapi: 3.1.0
+info:
+  title: incwo Muse read-only bridge
+  version: 0.1.0
+  description: "Contacts et entreprises / Contacts and firms / Contactos y empresas"
+servers:
+  - url: https://YOUR-CONNECTOR-HOST.example
+security:
+  - bearerAuth: []
+paths:
+  /contacts:
+    get:
+      operationId: listContacts
+      summary: "Lire les contacts / Read contacts / Leer contactos"
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 9999
+      responses:
+        '200':
+          description: "Page de contacts / Contact page / Página de contactos"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/XmlPage'
+  /firms:
+    get:
+      operationId: listFirms
+      summary: "Lire les entreprises / Read firms / Leer empresas"
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 9999
+      responses:
+        '200':
+          description: "Page d'entreprises / Firm page / Página de empresas"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/XmlPage'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    XmlPage:
+      type: object
+      required: [resource, page, xml]
+      properties:
+        resource:
+          type: string
+        page:
+          type: integer
+        xml:
+          type: string
